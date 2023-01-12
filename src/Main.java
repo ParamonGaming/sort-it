@@ -1,9 +1,17 @@
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
-    public static void main(String[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public static void main(String[] args) {
 
+        initKeyFactories();
+        String key = "-s";
+        IKeyFactory factory = DefaultKeyRegistry.getInstance().getFactory(key);
+        IKey keyObject = factory.create(key);
+        keyObject.execute();
+    }
+    private static void initKeyFactories() {
+        DefaultKeyRegistry registry = DefaultKeyRegistry.getInstance();
+        registry.registerFactory("-s", new DataTypeKeyFactory());
+        registry.registerFactory("-d", new SortKeyFactory());
+        registry.registerFactory("-i", new DataTypeKeyFactory());
+        registry.registerFactory("-a", new SortKeyFactory());
     }
 }

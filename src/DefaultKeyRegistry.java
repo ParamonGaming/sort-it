@@ -1,14 +1,13 @@
 import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class DefaultKeyRegistry {
     private static DefaultKeyRegistry instance;
     private Map<String, Consumer<DefaultKeyRegistry>>keys;
     private MergeSort mergeSort;
-    private SortStrategy strategy;
+    private SortStrategy strategy = new AscendingSortStrategy();
 
     public static DefaultKeyRegistry getInstance() {
         if (instance == null) {
@@ -29,10 +28,13 @@ public class DefaultKeyRegistry {
     public void registerKey(String key, Consumer<DefaultKeyRegistry> consumer) {
         keys.put(key, consumer);
     }
-    public Object getKey(String key) {
+    public Consumer<DefaultKeyRegistry> getKey(String key) {
+        keys.put("default", (keyRegistry) -> {
+            throw new IllegalArgumentException("Unknown key");
+        });
         return keys.getOrDefault(key,keys.get("default"));
     }
-    public MergeSort execute(String[] args){
+    public MergeSort execute(List<String> args){
         for(String arg : args){
             keys.get(arg).accept(this);
     }

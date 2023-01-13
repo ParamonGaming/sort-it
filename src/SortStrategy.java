@@ -1,3 +1,5 @@
+import java.util.List;
+
 interface SortStrategy<T> {
-    void sort(T[] array);
+    List<T> sort(List<T> array);
 }

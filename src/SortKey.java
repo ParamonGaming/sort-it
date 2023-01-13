@@ -1,10 +1,10 @@
-public class SortKey  implements  IKey{
-    private String key;
-    public SortKey(String key) {
-        this.key = key;
+public class SortKey  implements Key {
+    private Boolean isAscending;
+    public SortKey(boolean isAscending) {
+        this.isAscending = isAscending;
     }
 
     public void execute() {
-        System.out.println("Sorting by " + key);
+        System.out.println("Sorting by " + (isAscending? "Ascending" : "descending"));
     }
 }

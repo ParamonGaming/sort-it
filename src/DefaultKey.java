@@ -1,10 +1,9 @@
-public class DefaultKey implements IKey{
-    private String key;
-    public DefaultKey(String key) {
-        this.key = key;
+public class DefaultKey implements Key {
+    public DefaultKey() {
+
     }
 
     public void execute() {
-        System.out.println("Unknown key " + key);
+        System.out.println("Unknown key " );
     }
 }

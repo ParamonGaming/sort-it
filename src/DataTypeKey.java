@@ -1,10 +1,13 @@
-class DataTypeKey implements IKey {
-    private String key;
-    public DataTypeKey(String key) {
-        this.key = key;
+class DataTypeKey implements Key {
+    private Class<?> dataType;
+    public DataTypeKey(Class<?> data) {
+        dataType=data;
     }
-
+    public Class<?> getDataType()
+    {
+        return dataType;
+    }
     public void execute() {
-        System.out.println("Data type is " + key);
+        System.out.println("Data type is " + dataType.getTypeName());
     }
 }

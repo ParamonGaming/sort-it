@@ -4,7 +4,7 @@ import java.util.Map;
 public class DefaultKeyRegistry {
 
     private static DefaultKeyRegistry instance;
-    private Map<String, IKeyFactory> factories;
+    private Map<String, Key> keys;
 
     public static DefaultKeyRegistry getInstance() {
         if (instance == null) {
@@ -14,12 +14,12 @@ public class DefaultKeyRegistry {
     }
 
     private DefaultKeyRegistry() {
-        factories = new HashMap<>();
+        keys = new HashMap<>();
     }
-    public void registerFactory(String key, IKeyFactory factory) {
-        factories.put(key, factory);
+    public void registerKey(String key, Key factory) {
+        keys.put(key, factory);
     }
-    public IKeyFactory getFactory(String key) {
-        return factories.get(key);
+    public Key getKey(String key) {
+        return keys.getOrDefault(key,keys.get("default"));
     }
 }

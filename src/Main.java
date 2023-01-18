@@ -1,10 +1,14 @@
+import java.io.File;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 
 public class Main {
     public static void main(String[] args) {
+        FileProcessor fileProcessor;
+        MergeSort mergeSort;
         initKeyFactories();
         ArrayList<String> keys = new ArrayList<>();
         ArrayList<String> files = new ArrayList<>();
@@ -13,13 +17,18 @@ public class Main {
                 keys.add(s);
             } else {
                 files.add(s);
+                }
             }
+        try {
+            mergeSort = DefaultKeyRegistry.getInstance().execute(keys);
+            String outputFile = files.get(0);
+            files.remove(0);
+            fileProcessor = new FileProcessor(files, outputFile);
+            fileProcessor.writeOutputFile(mergeSort.sort(fileProcessor.getDataFromFile(new File(outputFile))));
         }
-        MergeSort mergeSort = DefaultKeyRegistry.getInstance().execute(keys);
-        String outputFile = files.get(0);
-        files.remove(0);
-        FileProcessor fileProcessor = new FileProcessor(files,outputFile);
-        fileProcessor.writeOutputFile(mergeSort.sort(fileProcessor.getInputData()));
+        catch (Exception e)
+        {System.out.println(e.getMessage());
+        }
     }
     private static void initKeyFactories() {
         DefaultKeyRegistry registry = DefaultKeyRegistry.getInstance();

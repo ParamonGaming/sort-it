@@ -1,17 +1,34 @@
+import java.util.ArrayList;
 import java.util.List;
 
 abstract class BaseSortStrategy<T> implements SortStrategy<T> {
     protected List<T> mergeSort(List<T> array, int left, int right) {
         if (left < right) {
-            int middle = (left + right) / 2;
-            mergeSort(array, left, middle);
-            mergeSort(array, middle + 1, right);
-            return merge(array, left, middle, right);
+            try {
+                int middle = (left + right) / 2;
+                mergeSort(array, left, middle);
+                mergeSort(array, middle + 1, right);
+                return merge(array, left, middle, right);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Error: Invalid index in array");
+            }
+            finally {
+                return array;
+            }
         }
         return array;
     }
 
+    public List<T> sort(List<T> array) {
+        try{
+        return mergeSort(array, 0, array.size() - 1);
+        } catch (NullPointerException e) {
+        System.out.println("Error: Array is empty or null");
+        return new ArrayList<>();
+        }
+    }
     protected List<T> merge(List<T> array, int left, int middle, int right) {
+        try {
         int sizeLeft = middle - left + 1;
         int sizeRight = right - middle;
 
@@ -48,8 +65,12 @@ abstract class BaseSortStrategy<T> implements SortStrategy<T> {
             j++;
             k++;
         }
-
-        return array;
+    } catch (IndexOutOfBoundsException e) {
+        System.out.println("Error: Invalid index in array");
+    }
+        finally {
+            return array;
+        }
     }
 
     protected abstract boolean compare(T a, T b);

@@ -1,6 +1,4 @@
-import java.util.HashMap;
 import java.util.*;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class DefaultKeyRegistry {
@@ -24,20 +22,38 @@ public class DefaultKeyRegistry {
 
     private DefaultKeyRegistry() {
         keys = new HashMap<>();
+        keys.put("default", (keyRegistry) -> {
+            throw new IllegalArgumentException("Unknown key");
+        });
     }
     public void registerKey(String key, Consumer<DefaultKeyRegistry> consumer) {
-        keys.put(key, consumer);
+        try {
+            keys.put(key, consumer);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: Invalid key or consumer");
+        }
+
     }
     public Consumer<DefaultKeyRegistry> getKey(String key) {
         keys.put("default", (keyRegistry) -> {
             throw new IllegalArgumentException("Unknown key");
         });
-        return keys.getOrDefault(key,keys.get("default"));
+        try {
+            return keys.getOrDefault(key,keys.get("default"));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: Unknown key");
+            return null;
+        }
     }
     public MergeSort execute(List<String> args){
         for(String arg : args){
-            keys.get(arg).accept(this);
+            try {
+            keys.getOrDefault(arg,keys.get("default")).accept(this);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: Unknown key");
+            }
     }
         mergeSort.setStrategy(strategy);
         return mergeSort;
-}}
+}
+}

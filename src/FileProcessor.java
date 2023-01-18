@@ -2,31 +2,39 @@ import java.io.*;
 import java.util.*;
 
 public class FileProcessor<T> {
-    private List<T> inputData;
     private File outputFile;
 
     public FileProcessor(List<String> inputFilesPath, String outputFile) {
-        this.inputData = new ArrayList<>();
         this.outputFile = new File(outputFile);
         List<File> inputFiles = new ArrayList<>();
         for(String path : inputFilesPath){
             inputFiles.add(new File(path));
         }
-        for (File inputFile : inputFiles) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    T data = (T) line;
-                    inputData.add(data);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        processFiles(inputFiles,this.outputFile);
+}
+    public void processFiles(List<File> files, File outputFile) {
+        List<T> data = new ArrayList<>();
+        for (File file : files) {
+            data.addAll( getDataFromFile(file));
         }
+        writeOutputFile(data);
     }
-    public List<T> getInputData() {
-        return inputData;
+    public List<T> getDataFromFile(File file)
+    {   List<T> datas = new ArrayList<T>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().length() > 0 && !line.contains(" ")) {
+                    T data = (T) line;
+                    datas.add(data);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return datas;
     }
+
     public void writeOutputFile(List<T> sorted) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
             for (T data : sorted) {
@@ -34,7 +42,7 @@ public class FileProcessor<T> {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error writing to output file: " + e.getMessage());
         }
     }
 }

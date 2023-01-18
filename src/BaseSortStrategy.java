@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-
 abstract class BaseSortStrategy<T> implements SortStrategy<T> {
     protected List<T> mergeSort(List<T> array, int left, int right) {
         if (left < right) {

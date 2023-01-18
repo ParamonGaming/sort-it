@@ -1,5 +1,3 @@
-import java.util.List;
-
 class DescendingSortStrategy<T extends Comparable<T>> extends BaseSortStrategy<T> {
 
 

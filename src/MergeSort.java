@@ -1,4 +1,3 @@
-import java.lang.reflect.GenericDeclaration;
 import java.util.List;
 
 class MergeSort<T extends Comparable<T>>{
